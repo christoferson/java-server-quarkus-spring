@@ -2,6 +2,7 @@ package org.demo.controller;
 
 import org.demo.model.Account;
 import org.demo.repository.IAccountRepository;
+import org.demo.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,10 +21,13 @@ public class AccountResource {
 	@Autowired
 	IAccountRepository repository;
 	
+	@Autowired
+	IAccountService service;
+	
 	@GetMapping("/{id}")
 	public Account find(@PathVariable("id") long id) {
 
-		Account account = repository.findById(id).orElse(null);
+		Account account = service.find(id);
 		if (account == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Account with ID=%s not found.", id));
 		}
