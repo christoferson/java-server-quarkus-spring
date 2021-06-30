@@ -11,12 +11,14 @@ public class AccountService implements IAccountService {
 
 	@Autowired
 	IAccountRepository repository;
-	
+
 	@Override
 	public Account find(long id) {
 
-		Account account = repository.findById(id)
-				.orElseThrow(() -> new ApplicationException());
+		Account account = repository.findById(id).orElse(null);
+		if (account == null) {
+			throw new ApplicationException(String.format("Failed to Find Account with ID='%s'", id));
+		}
 	
 		return account;
 
